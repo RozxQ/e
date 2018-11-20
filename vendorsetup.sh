@@ -1,1 +1,1 @@
-add_lunch_combo cardinal_rolex-userdebug
+add_lunch_combo lineage_rolex-userdebug
