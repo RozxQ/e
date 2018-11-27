@@ -57,3 +57,25 @@ fi
 cp /firmware/image/modem_pr/mbn_ota.txt /data/vendor/radio/modem_config
 chown radio.radio /data/vendor/radio/modem_config/mbn_ota.txt
 echo 1 > /data/vendor/radio/copy_complete
+
+#check build variant for printk logging
+#current default minimum boot-time-default
+buildvariant=`getprop ro.build.type`
+case "$buildvariant" in
+    "userdebug" | "eng")
+        #set default loglevel to KERN_INFO
+        echo "6 6 1 7" > /proc/sys/kernel/printk
+        ;;
+    *)
+        #set default loglevel to KERN_WARNING
+        echo "4 4 1 4" > /proc/sys/kernel/printk
+        ;;
+esac
+
+on post-fs-data
+
+    # IR nodes
+    chown system system /dev/spidev7.1
+    chown system system /dev/spidev6.1
+    chmod 0666 /dev/spidev7.1
+    chmod 0666 /dev/spidev6.1
